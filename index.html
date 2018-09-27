@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- meta data -->
+	<title>Should I PWA?</title>
+	<meta charset="utf-8">
+	<meta name="description" content="Guideline for the Usage of Progressive Web Apps">
+	<meta name="author" content="Kevin Frank">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- JQuery -->
+	<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+	
+	<!-- Should I PWA -->
+	<link rel="stylesheet" href="css/shouldipwa.css" />
+	<script src="i18n/en.js"></script>
+	<script src="js/rules.js"></script>
+	<script src="js/shouldipwa.js"></script>
+	
+	<!-- JQuery Mobile -->
+	<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+	<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+</head>
+<body>
+
+	<div data-role="page" id="intro">
+	
+		<div data-role="header">
+			<h1>Should I PWA?</h1>
+		</div>
+	
+		<div class="ui-content" role="main">
+			<p>Intro Text</p>
+			<a class="ui-btn ui-corner-all" href="#guideline">Let's Start!</a>
+		</div>
+	
+	</div>
+
+	<div data-role="page" id="guideline">
+	
+		<div data-role="header">
+			<h1>Should I PWA?</h1>
+		</div>
+		
+		<div class="ui-content" role="main">
+			<form>
+				<h2>Browser support</h2>
+				<p>As a first step, please specify, which browsers from which version should be supported.</p>
+				
+				<div id="browser-support">
+					<div class="ui-grid-a">
+						<div class="ui-block-a">
+							<label for="browser-chrome-supported">Chrome</label>
+							<input id="browser-chrome-supported" type="checkbox" data-role="flipswitch" data-on-text="Supported" data-off-text="Unsupported" data-wrapper-class="custom-size-flipswitch">
+						</div>
+						<div class="ui-block-b">
+							<label for="browser-chrome-version">from version</label>
+							<input id="browser-chrome-version" type="number" data-clear-btn="false">
+						</div>
+					</div>
+					<hr>
+					<div class="ui-grid-a">
+						<div class="ui-block-a">
+							<label for="browser-firefox-supported">Firefox</label>
+							<input id="browser-firefox-supported" type="checkbox" data-role="flipswitch" data-on-text="Supported" data-off-text="Unsupported" data-wrapper-class="custom-size-flipswitch">
+						</div>
+						<div class="ui-block-b">
+							<label for="browser-firefox-version">from version</label>
+							<input id="browser-firefox-version" type="number" data-clear-btn="false">
+						</div>
+					</div>
+					<hr>
+					<div class="ui-grid-a">
+						<div class="ui-block-a">
+							<label for="browser-safari-supported">Safari</label>
+							<input id="browser-safari-supported" type="checkbox" data-role="flipswitch" data-on-text="Supported" data-off-text="Unsupported" data-wrapper-class="custom-size-flipswitch">
+						</div>
+						<div class="ui-block-b">
+							<label for="browser-safari-version">from version</label>
+							<input id="browser-safari-version" type="number" data-clear-btn="false">
+						</div>
+					</div>
+					<hr>
+					<div class="ui-grid-a">
+						<div class="ui-block-a">
+							<label for="browser-ie-supported">Internet Explorer</label>
+							<input id="browser-ie-supported" type="checkbox" data-role="flipswitch" data-on-text="Supported" data-off-text="Unsupported" data-wrapper-class="custom-size-flipswitch">
+						</div>
+						<div class="ui-block-b">
+							<label for="browser-ie-version">from version</label>
+							<input id="browser-ie-version" type="number" data-clear-btn="false">
+						</div>
+					</div>
+					<hr>
+					<div class="ui-grid-a">
+						<div class="ui-block-a">
+							<label for="browser-edge-supported">Edge</label>
+							<input id="browser-edge-supported" type="checkbox" data-role="flipswitch" data-on-text="Supported" data-off-text="Unsupported" data-wrapper-class="custom-size-flipswitch">
+						</div>
+						<div class="ui-block-b">
+							<label for="browser-edge-version">from version</label>
+							<input id="browser-edge-version" type="number" data-clear-btn="false">
+						</div>
+					</div>
+				</div>
+				
+				<h2>Guideline</h2>
+				
+				<div class="rule-container">
+					<div class="prototype" hidden="hidden">
+						<fieldset data-role="controlgroup" data-type="horizontal" class="ui-field-contain">
+					        <legend></legend>
+					        <input id="radio-choice-h-2a" name="radio-choice" type="radio" value="required">
+					        <label for="radio-choice-h-2a">Required</label>
+					        <input id="radio-choice-h-2b" name="radio-choice" type="radio" value="nicetohave">
+					        <label for="radio-choice-h-2b">Nice to have</label>
+					        <input id="radio-choice-h-2c" name="radio-choice" type="radio" value="inessential" checked="checked">
+					        <label for="radio-choice-h-2c">Inessential</label>
+					    </fieldset>
+					</div>
+				</div>
+			</form>
+		</div>
+		
+		<!-- <div data-role="footer">
+			Footer
+		</div> -->
+	</div>
+	
+	<div data-role="page" id="result">
+	</div>
+</body>
+</html>
