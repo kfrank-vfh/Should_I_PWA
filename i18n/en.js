@@ -1,4 +1,13 @@
 i18n = {};
+
+// browsers
+i18n["browser.chrome"] = "Chrome";
+i18n["browser.firefox"] = "Firefox";
+i18n["browser.safari"] = "Safari";
+i18n["browser.ie"] = "Internet Explorer";
+i18n["browser.edge"] = "Edge";
+
+// rules
 i18n["hardware"] = "Hardware-based functions";
 i18n["hardware.recording"] = "Recording of media";
 i18n["hardware.recording.image"] = "Taking pictures";

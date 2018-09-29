@@ -7,6 +7,7 @@
 	<meta name="description" content="Guideline for the Usage of Progressive Web Apps">
 	<meta name="author" content="Kevin Frank">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" href="">
 
 	<!-- JQuery -->
 	<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -45,77 +46,40 @@
 		<div class="ui-content" role="main">
 			<form>
 				<h2>Browser support</h2>
-				<p>As a first step, please specify, which browsers from which version should be supported.</p>
+				<p>As a first step, please specify, which browsers and which versions should be supported.</p>
 				
-				<div id="browser-support">
-					<div class="ui-grid-a">
-						<div class="ui-block-a">
-							<label for="browser-chrome-supported">Chrome</label>
-							<input id="browser-chrome-supported" type="checkbox" data-role="flipswitch" data-on-text="Supported" data-off-text="Unsupported" data-wrapper-class="custom-size-flipswitch">
-						</div>
-						<div class="ui-block-b">
-							<label for="browser-chrome-version">from version</label>
-							<input id="browser-chrome-version" type="number" data-clear-btn="false">
-						</div>
-					</div>
-					<hr>
-					<div class="ui-grid-a">
-						<div class="ui-block-a">
-							<label for="browser-firefox-supported">Firefox</label>
-							<input id="browser-firefox-supported" type="checkbox" data-role="flipswitch" data-on-text="Supported" data-off-text="Unsupported" data-wrapper-class="custom-size-flipswitch">
-						</div>
-						<div class="ui-block-b">
-							<label for="browser-firefox-version">from version</label>
-							<input id="browser-firefox-version" type="number" data-clear-btn="false">
-						</div>
-					</div>
-					<hr>
-					<div class="ui-grid-a">
-						<div class="ui-block-a">
-							<label for="browser-safari-supported">Safari</label>
-							<input id="browser-safari-supported" type="checkbox" data-role="flipswitch" data-on-text="Supported" data-off-text="Unsupported" data-wrapper-class="custom-size-flipswitch">
-						</div>
-						<div class="ui-block-b">
-							<label for="browser-safari-version">from version</label>
-							<input id="browser-safari-version" type="number" data-clear-btn="false">
-						</div>
-					</div>
-					<hr>
-					<div class="ui-grid-a">
-						<div class="ui-block-a">
-							<label for="browser-ie-supported">Internet Explorer</label>
-							<input id="browser-ie-supported" type="checkbox" data-role="flipswitch" data-on-text="Supported" data-off-text="Unsupported" data-wrapper-class="custom-size-flipswitch">
-						</div>
-						<div class="ui-block-b">
-							<label for="browser-ie-version">from version</label>
-							<input id="browser-ie-version" type="number" data-clear-btn="false">
-						</div>
-					</div>
-					<hr>
-					<div class="ui-grid-a">
-						<div class="ui-block-a">
-							<label for="browser-edge-supported">Edge</label>
-							<input id="browser-edge-supported" type="checkbox" data-role="flipswitch" data-on-text="Supported" data-off-text="Unsupported" data-wrapper-class="custom-size-flipswitch">
-						</div>
-						<div class="ui-block-b">
-							<label for="browser-edge-version">from version</label>
-							<input id="browser-edge-version" type="number" data-clear-btn="false">
+				<div id="browser-container">
+					<div class="prototype" hidden="hidden">
+						<div class="ui-grid-a">
+							<div class="ui-block-a">
+								<fieldset data-role="controlgroup" data-type="horizontal" class="ui-field-contain">
+							        <legend></legend>
+							        <input type="radio" value="true">
+							        <label>Supported</label>
+							        <input type="radio" value="false" checked="checked">
+							        <label>Unsupported</label>
+						    	</fieldset>
+							</div>
+							<div class="ui-block-b">
+								<label>from version</label>
+								<input type="number" data-clear-btn="false">
+							</div>
 						</div>
 					</div>
 				</div>
 				
 				<h2>Guideline</h2>
 				
-				<div class="rule-container">
+				<div id="rule-container">
 					<div class="prototype" hidden="hidden">
 						<fieldset data-role="controlgroup" data-type="horizontal" class="ui-field-contain">
 					        <legend></legend>
-					        <input id="radio-choice-h-2a" name="radio-choice" type="radio" value="required">
-					        <label for="radio-choice-h-2a">Required</label>
-					        <input id="radio-choice-h-2b" name="radio-choice" type="radio" value="nicetohave">
-					        <label for="radio-choice-h-2b">Nice to have</label>
-					        <input id="radio-choice-h-2c" name="radio-choice" type="radio" value="inessential" checked="checked">
-					        <label for="radio-choice-h-2c">Inessential</label>
+					        <input type="radio" value="required">
+					        <label>Required</label>
+					        <input type="radio" value="nicetohave">
+					        <label>Nice to have</label>
+					        <input type="radio" value="inessential" checked="checked">
+					        <label>Inessential</label>
 					    </fieldset>
 					</div>
 				</div>
