@@ -30,7 +30,7 @@ $(document).on("pagebeforecreate", function(event) {
 			$(label).attr("for", "browser-" + browser + "-supported" + index);
 		});
 		// adjust version number field
-		browserElem.find("ui-block-b input").each(function(index, input) {
+		browserElem.find(".ui-block-b input").each(function(index, input) {
 			var name = "browser-" + browser + "-version";
 			input.id = name + index;
 			input.name = name;
@@ -90,14 +90,19 @@ $(document).on("pagebeforecreate", function(event) {
 	resursiveBuildRuleUI(2, ruleStructure, "");
 });
 
-// init change handler for browser support switches
+// click handler for evaluation
 $(function() {
-	var browserSupportRadios = $("#browser-container .ui-block-a input");
-	browserSupportRadios.change(function() {
-		var input = $(this);
-		var supported = input.parents(".ui-controlgroup-controls ").find("input[value=true]").is(":checked");
-		var versionBlock = input.parents(".ui-grid-a").children(".ui-block-b");
-		versionBlock.toggle(supported)
+	$("#btnEvaluate").click(function() {
+		// get browser support data
+		var browserSupportData = {};
+		$("#browser-container .ui-block-a input[value=true]").filter(":checked").each(function(index, input) {
+			var browser = input.name;
+			browser = browser.substring(8, browser.length - 10);
+			var version = $(input).parents(".ui-grid-a").find("input[name=browser-" + browser + "-version]").val();
+			version = /\d+([.,]\d+)?/.test(version) ? parseFloat(version.replace(",", ".")) : 0.0;
+			version = version < 0 ? 0.0 : version;
+			browserSupportData[browser] = version;
+		});
+		console.dir(browserSupportData);
 	});
-	browserSupportRadios.change();
 });
