@@ -1,3 +1,6 @@
+// globale variables
+var browsers = ["chrome", "firefox", "safari", "ie", "edge"];
+
 // generate UI for rules
 $(document).on("pagebeforecreate", function(event) {
 	
@@ -13,7 +16,7 @@ $(document).on("pagebeforecreate", function(event) {
 	browserContainer.find("div.prototype").remove();
 	
 	// build iu element for each browser
-	["chrome", "firefox", "safari", "ie", "edge"].forEach(function(browser) {
+	browsers.forEach(function(browser) {
 		// add horizontal ruler
 		if(browser !== "chrome") {
 			browserContainer.append("<hr>");
@@ -104,7 +107,8 @@ $(function() {
 				browser = browser.substring(8, browser.length - 10);
 				var version = $(input).parents(".ui-grid-a").find("input[name=browser-" + browser + "-version]").val();
 				version = /\d+([.,]\d+)?/.test(version) ? parseFloat(version.replace(",", ".")) : 0.0;
-				version = version < 0 ? 0.0 : version;
+				if(version < 0) version = 0.0;
+				if(browser === "edge" && version > 0.0 && version < 12.0) version = 12.0;
 				browserSupportData[browser] = version;
 			});
 			console.dir(browserSupportData);
