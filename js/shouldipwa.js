@@ -95,14 +95,38 @@ $(function() {
 	$("#btnEvaluate").click(function() {
 		// get browser support data
 		var browserSupportData = {};
-		$("#browser-container .ui-block-a input[value=true]").filter(":checked").each(function(index, input) {
-			var browser = input.name;
-			browser = browser.substring(8, browser.length - 10);
-			var version = $(input).parents(".ui-grid-a").find("input[name=browser-" + browser + "-version]").val();
-			version = /\d+([.,]\d+)?/.test(version) ? parseFloat(version.replace(",", ".")) : 0.0;
-			version = version < 0 ? 0.0 : version;
-			browserSupportData[browser] = version;
-		});
-		console.dir(browserSupportData);
+		var browserAlert = $("p#browser-alert");
+		var checkedBrowsers = $("#browser-container .ui-block-a input[value=true]").filter(":checked");
+		if(checkedBrowsers.length) {
+			browserAlert.hide();
+			checkedBrowsers.each(function(index, input) {
+				var browser = input.name;
+				browser = browser.substring(8, browser.length - 10);
+				var version = $(input).parents(".ui-grid-a").find("input[name=browser-" + browser + "-version]").val();
+				version = /\d+([.,]\d+)?/.test(version) ? parseFloat(version.replace(",", ".")) : 0.0;
+				version = version < 0 ? 0.0 : version;
+				browserSupportData[browser] = version;
+			});
+			console.dir(browserSupportData);
+		} else {
+			browserAlert.show();
+			$("h2")[0].scrollIntoView();
+		}
+		
+		// get required and nice to have rule data
+		var requiredFeatures, niceToHaveFeatures;
+		var ruleAlert = $("p#rule-alert");
+		var checkedRequired = $("#rule-container input[value=required]").filter(":checked");
+		var checkedNiceToHave = $("#rule-container input[value=nicetohave]").filter(":checked");
+		if(checkedRequired.length + checkedNiceToHave.length) {
+			ruleAlert.hide();
+			requiredFeatures = checkedRequired.map(function() { return this.name; }).toArray();
+			niceToHaveFeatures = checkedNiceToHave.map(function() { return this.name; }).toArray();
+			console.dir(requiredFeatures);
+			console.dir(niceToHaveFeatures);
+		} else {
+			ruleAlert.show();
+			$("h2")[1].scrollIntoView();
+		}
 	});
 });

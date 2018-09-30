@@ -3,25 +3,13 @@ h3 { font-size: 1.6em; }
 h4 { font-size: 1.4em; }
 h5 { font-size: 1.2em; }
 
-.custom-size-flipswitch.ui-flipswitch .ui-btn.ui-flipswitch-on {
-	text-indent: -5.9em;
-}
-.custom-size-flipswitch.ui-flipswitch .ui-flipswitch-off {
-	text-indent: 0.5em;
-}
-.custom-size-flipswitch.ui-flipswitch {
-	width: 9.5em;
-}
-.custom-size-flipswitch.ui-flipswitch.ui-flipswitch-active {
-	padding-left: 7em;
-	width: 1.875em;
-}
-
-@media (min-width: 28em) {
-	/*Repeated from rule .ui-flipswitch above*/
-	.ui-field-contain > label + .custom-size-flipswitch.ui-flipswitch {
-		width: 1.875em;
-	}
+p#browser-alert, p#rule-alert {
+	font-weight: bold;
+	background-color: rgba(255, 0, 0, .1);
+	color: red;
+	padding: 1em;
+	border: .2em solid red;
+	border-radius: 1em;
 }
 
 
