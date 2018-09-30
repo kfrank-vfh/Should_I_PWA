@@ -1,6 +1,3 @@
-// globale variables
-var browsers = ["chrome", "firefox", "safari", "ie", "edge"];
-
 // generate UI for rules
 $(document).on("pagebeforecreate", function(event) {
 	

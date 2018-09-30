@@ -1,8 +1,14 @@
 // TODO mention, that data is taken partially from caniuse.com
 
+// GLOBAL VARIABLES
+var browsers = ["chrome", "firefox", "safari", "ie", "edge"];
+var rules = {};
+var ruleStructure;
+var caniuseMapping = {};
+
 // RULE STRUCTURE
 
-var ruleStructure = {
+ruleStructure = {
 	hardware: {
 		recording: {
 			image: ["elem", "api"],
@@ -42,7 +48,11 @@ var ruleStructure = {
 		communication: ["emails", "push"],
 		install: ["manifest"],
 		offline: ["appcache", "serviceworker"],
-		organization: ["alarm", "calendar", "contacts", "notes"],
+		organization: {
+			calendar: ["google", "apple"],
+			contacts: ["google", "apple"],
+			miscellaneous: ["alarm", "notes"]
+		},
 		maps: ["maps"],
 		sales: ["direct", "inapp"],
 		speech: ["synthesis", "recognition"]
@@ -52,7 +62,6 @@ var ruleStructure = {
 // CAN I USE DATA
 
 // create mapping of caniuse id to feature
-var caniuseMapping = {};
 caniuseMapping["hardware.recording.image.api"] = "mediacapture-fromelement";
 caniuseMapping["hardware.recording.audio.api"] = "mediacapture-fromelement";
 caniuseMapping["hardware.recording.video.api"] = "mediacapture-fromelement";
@@ -126,59 +135,103 @@ Object.keys(caniuseMapping).map(function(featureID) { return caniuseMapping[feat
 	}, "json");
 });
 
-
 // RULE IMPLEMENTATION
 
-var rules = {};
-rules["hardware.recording.image.elem"] = function() {};
-rules["hardware.recording.image.api"] = function() {};
-rules["hardware.recording.audio.elem"] = function() {};
-rules["hardware.recording.audio.api"] = function() {};
-rules["hardware.recording.video.elem"] = function() {};
-rules["hardware.recording.video.api"] = function() {};
-rules["hardware.output.image.elem"] = function() {};
-rules["hardware.output.image.webgl1"] = function() {};
-rules["hardware.output.image.webgl2"] = function() {};
-rules["hardware.output.audio.elem"] = function() {};
-rules["hardware.output.audio.api"] = function() {};
-rules["hardware.output.video.elem"] = function() {};
-rules["hardware.output.vibration.api"] = function() {};
-rules["hardware.persistence.keyvalue.api"] = function() {};
-rules["hardware.persistence.complex.idb1"] = function() {};
-rules["hardware.persistence.complex.idb2"] = function() {};
-rules["hardware.persistence.filesystem.elem"] = function() {};
-rules["hardware.persistence.filesystem.direct"] = function() {};
-rules["hardware.communication.mobile.telephony"] = function() {};
-rules["hardware.communication.mobile.messaging"] = function() {};
-rules["hardware.communication.internet.networkstatus"] = function() {};
-rules["hardware.communication.internet.requesting"] = function() {};
-rules["hardware.communication.miscellaneous.gps"] = function() {};
-rules["hardware.communication.miscellaneous.bluetooth"] = function() {};
-rules["hardware.communication.miscellaneous.nfc"] = function() {};
-rules["hardware.communication.miscellaneous.usb"] = function() {};
-rules["hardware.sensors.motion.acceleration.event"] = function() {};
-rules["hardware.sensors.motion.acceleration.api"] = function() {};
-rules["hardware.sensors.motion.rotation.event"] = function() {};
-rules["hardware.sensors.motion.rotation.api"] = function() {};
-rules["hardware.sensors.environment.light.event"] = function() {};
-rules["hardware.sensors.environment.light.api"] = function() {};
-rules["hardware.sensors.environment.magnetic.api"] = function() {};
-rules["hardware.sensors.environment.proximity.event"] = function() {};
-rules["hardware.sensors.environment.proximity.api"] = function() {};
-rules["hardware.sensors.environment.other.temperature"] = function() {};
-rules["hardware.sensors.environment.other.pressure"] = function() {};
-rules["hardware.sensors.environment.other.humidity"] = function() {};
-rules["software.communication.emails"] = function() {};
-rules["software.communication.push"] = function() {};
-rules["software.install.manifest"] = function() {};
-rules["software.offline.appcache"] = function() {};
-rules["software.offline.serviceworker"] = function() {};
-rules["software.organization.alarm"] = function() {};
-rules["software.organization.calendar"] = function() {};
-rules["software.organization.contacts"] = function() {};
-rules["software.organization.notes"] = function() {};
-rules["software.maps.maps"] = function() {};
-rules["software.sales.direct"] = function() {};
-rules["software.sales.inapp"] = function() {};
-rules["software.speech.synthesis"] = function() {};
-rules["software.speech.recognition"] = function() {};
+rules["hardware.recording.image.elem"] = resultForAll(true);
+rules["hardware.recording.image.api"] = caniuseCheck("mediacapture-fromelement");
+rules["hardware.recording.audio.elem"] = resultForAll(true);
+rules["hardware.recording.audio.api"] = caniuseCheck("mediacapture-fromelement");
+rules["hardware.recording.video.elem"] = resultForAll(true);
+rules["hardware.recording.video.api"] = caniuseCheck("mediacapture-fromelement");
+rules["hardware.output.image.elem"] = resultForAll(true);
+rules["hardware.output.image.webgl1"] = caniuseCheck("webgl");
+rules["hardware.output.image.webgl2"] = caniuseCheck("webgl2");
+rules["hardware.output.audio.elem"] = caniuseCheck("audio");
+rules["hardware.output.audio.api"] = caniuseCheck("audio-api");
+rules["hardware.output.video.elem"] = caniuseCheck("video");
+rules["hardware.output.vibration.api"] = caniuseCheck("vibration");
+rules["hardware.persistence.keyvalue.api"] = caniuseCheck("namevalue-storage");
+rules["hardware.persistence.complex.idb1"] = caniuseCheck("indexeddb");
+rules["hardware.persistence.complex.idb2"] = caniuseCheck("indexeddb2");
+rules["hardware.persistence.filesystem.elem"] = resultForAll(true);
+rules["hardware.persistence.filesystem.direct"] = resultForAll(false);
+rules["hardware.communication.mobile.telephony"] = resultForAll(true);
+rules["hardware.communication.mobile.messaging"] = resultForAll(true);
+rules["hardware.communication.internet.networkstatus"] = staticCheck({
+	chrome: [{version: 61, support: "y"}],
+	firefox: [{version: 31, support: "a", note: "Available only on mobile devices."}],
+	safari: [], ie: [], edge: []});
+rules["hardware.communication.internet.requesting"] = staticCheck({
+	chrome: [{version: 0, support: "y"}], firefox: [{version: 0, support: "y"}],
+	safari: [{version: 1.2, support: "y"}], ie: [{version: 7, support: "y"}],
+	edge: [{version: 0, support: "y"}]});
+rules["hardware.communication.miscellaneous.gps"] = caniuseCheck("geolocation");
+rules["hardware.communication.miscellaneous.bluetooth"] = caniuseCheck("web-bluetooth");
+rules["hardware.communication.miscellaneous.nfc"] = resultForAll(false);
+rules["hardware.communication.miscellaneous.usb"] = caniuseCheck("webusb");
+rules["hardware.sensors.motion.acceleration.event"] = caniuseCheck("deviceorientation");
+rules["hardware.sensors.motion.acceleration.api"] = caniuseCheck("accelerometer");
+rules["hardware.sensors.motion.rotation.event"] = caniuseCheck("deviceorientation");
+rules["hardware.sensors.motion.rotation.api"] = caniuseCheck("gyroscope");
+rules["hardware.sensors.environment.light.event"] = staticCheck({
+	chrome: [], safari: [], ie: [], edge: [{version: 0, support: "y"}],
+	firefox: [{ version: 62, support: "a", note: "preference \"device.sensors.ambientLight.enabled\" must be set to \"true\"."}]});
+rules["hardware.sensors.environment.light.api"] = staticCheck({
+	chrome: [{ version: 54, support: "y"}],
+	firefox: [], safari: [], ie: [], edge: []});
+rules["hardware.sensors.environment.magnetic.api"] = caniuseCheck("magnetometer");
+rules["hardware.sensors.environment.proximity.event"] = staticCheck({
+	firefox: [{ version: 62, support: "a", note: "preference \"device.sensors.proximity.enabled\" must be set to \"true\"."}],
+	chrome: [], safari: [], ie: [], edge: []});
+rules["hardware.sensors.environment.proximity.api"] = resultForAll(false);
+rules["hardware.sensors.environment.other.temperature"] = resultForAll(false);
+rules["hardware.sensors.environment.other.pressure"] = resultForAll(false);
+rules["hardware.sensors.environment.other.humidity"] = resultForAll(false);
+rules["software.communication.emails"] = resultForAll(true);
+rules["software.communication.push"] = staticCheck({
+	chrome: [{ version: 40, support: "y"}], firefox: [{version: 44, support: "y"}],
+	safari: [{ version: 11.1, support: "a", note: "Safari requires a custom API."}],
+	ie: [], edge: [{ version: 17, support: "y"}]
+});
+rules["software.install.manifest"] = caniuseCheck("web-app-manifest");
+rules["software.offline.appcache"] = caniuseCheck("offline-apps");
+rules["software.offline.serviceworker"] = caniuseCheck("serviceworkers");
+rules["software.organization.calendar.google"] = resultForAll(true);
+rules["software.organization.calendar.apple"] = resultForAll(false);
+rules["software.organization.contacts.google"] = resultForAll(true);
+rules["software.organization.contacts.apple"] = resultForAll(false);
+rules["software.organization.miscellaneous.alarm"] = resultForAll(false);
+rules["software.organization.miscellaneous.notes"] = resultForAll(false);
+rules["software.maps.maps"] = resultForAll(true);
+rules["software.sales.direct"] = resultForAll(false);
+rules["software.sales.inapp"] = caniuseCheck("payment-request");
+rules["software.speech.synthesis"] = caniuseCheck("speech-synthesis");
+rules["software.speech.recognition"] = caniuseCheck("speech-recognition");
+
+// CHECK IMPLEMENTATION
+
+function doCheck(browserData, supportData) {
+	// TODO
+}
+
+function caniuseCheck(caniuseID) {
+	var supportData = caniuseSupportData[caniuseID];
+	return function(browserData) {
+		return doCheck(browserData, supportData);
+	}
+}
+
+function staticCheck(supportData) {
+	return function(browserData) {
+		return doCheck(browserData, supportData);
+	}
+}
+
+function resultForAll(supported) {
+	var supportData = {};
+	var support = supported ? "y" : "n";
+	browsers.forEach(function(browser) {
+		supportData[browser] = [{ version: 0.0, support: support}];
+	});
+	return staticCheck(supportData);
+}
