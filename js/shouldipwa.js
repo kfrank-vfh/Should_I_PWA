@@ -94,6 +94,10 @@ $(document).on("pagebeforecreate", function(event) {
 $(function() {
 	var overallResultTitle = $("div#result p#overall-result-title");
 	var overallResultDescription = $("div#result p#overall-result-description");
+	var requiredFeatureBlock = $("div#result div#required-feature-block");
+	var requiredFeatureContainer = requiredFeatureBlock.find("div#required-feature-container");
+	var nicetohaveFeatureBlock = $("div#result div#nicetohave-feature-block");
+	var nicetohaveFeatureContainer = nicetohaveFeatureBlock.find("div#nicetohave-feature-container");
 	
 	$("#btnEvaluate").click(function() {
 		// get browser support data
@@ -170,6 +174,56 @@ $(function() {
 		overallResultTitle.text(i18n["result." + overallLevel + ".title"]);
 		overallResultTitle.attr("class", overallLevel);
 		overallResultDescription.text(i18n["result." + overallLevel + ".description"]);
+		
+		// generate ui for result per feature container
+		var generatePerFeatureUI = function(container, supportData) {
+			container.empty();
+			Object.keys(supportData).forEach(function(featureID) {
+				// create headline
+				var parentFeatureID = featureID.substring(0, featureID.lastIndexOf("."));
+				container.append("<h4>" + i18n[parentFeatureID] + " - " + i18n[featureID] + "</h4>");
+				// function for creating paragraph text
+				var supportToBrowser = supportData[featureID];
+				var createParaText = function(filter) {
+					return Object.keys(supportToBrowser).filter(filter).map(function(browser) {
+						// var support = supportToBrowser[browser]; // TODO process notes
+						return i18n["browser." + browser];
+					}).reduce(function(prev, current) { return prev.length ? prev + ", " + current : current; }, "");
+				}
+				// create paragraph for supported browsers
+				var paraText = createParaText(function(browser) {
+					var support = supportToBrowser[browser];
+					return support === true || support.partial === false;
+				});
+				if(paraText.length) {
+					container.append("<p>Feature supported by " + paraText + "</p>");
+				}
+				// create paragraph for partially supported browsers
+				paraText = createParaText(function(browser) {
+					var support = supportToBrowser[browser];
+					return typeof support === "object" && support.partial;
+				});
+				if(paraText.length) {
+					container.append("<p>Feature partially supported by " + paraText + ".</p>");
+				}
+				// create paragraph for unsupported browsers
+				paraText = createParaText(function(browser) {
+					return supportToBrowser[browser] === false;
+				});
+				if(paraText.length) {
+					container.append("<p>Feature unsupported by " + paraText + "</p>");
+				}
+				// create notes, when some were specified
+				// TODO
+				
+				// create useful web links
+				// TODO
+			});
+		}
+		requiredFeatureBlock.toggle(Object.keys(requiredSupport).length > 0);
+		generatePerFeatureUI(requiredFeatureContainer, requiredSupport);
+		nicetohaveFeatureBlock.toggle(Object.keys(niceToHaveSupport).length > 0);
+		generatePerFeatureUI(nicetohaveFeatureContainer, niceToHaveSupport);
 		
 		// show result page
 		$.mobile.navigate("#result");
