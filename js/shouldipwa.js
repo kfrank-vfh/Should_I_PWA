@@ -183,11 +183,17 @@ $(function() {
 				var parentFeatureID = featureID.substring(0, featureID.lastIndexOf("."));
 				container.append("<h4>" + i18n[parentFeatureID] + " - " + i18n[featureID] + "</h4>");
 				// function for creating paragraph text
+				var notes = [];
 				var supportToBrowser = supportData[featureID];
 				var createParaText = function(filter) {
 					return Object.keys(supportToBrowser).filter(filter).map(function(browser) {
-						// var support = supportToBrowser[browser]; // TODO process notes
-						return i18n["browser." + browser];
+						var result = i18n["browser." + browser];
+						var note = supportToBrowser[browser].note;
+						if(note) {
+							notes.push(note);
+							result += "<sup>" + notes.length + "</sup>";
+						}
+						return result;
 					}).reduce(function(prev, current) { return prev.length ? prev + ", " + current : current; }, "");
 				}
 				// create paragraph for supported browsers
@@ -214,8 +220,12 @@ $(function() {
 					container.append("<p>Feature unsupported by " + paraText + "</p>");
 				}
 				// create notes, when some were specified
-				// TODO
-				
+				if(notes.length) {
+					var listItems = notes.reduce(function(prev, note) {
+						return prev + "<li>" + note + "</li>";
+					}, "");
+					container.append("<p>Notes:</p><ol>" + listItems + "</ol>");
+				}
 				// create useful web links
 				// TODO
 			});
