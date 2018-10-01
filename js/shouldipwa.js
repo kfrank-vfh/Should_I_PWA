@@ -92,9 +92,13 @@ $(document).on("pagebeforecreate", function(event) {
 
 // click handler for evaluation
 $(function() {
+	var overallResultTitle = $("div#result p#overall-result-title");
+	var overallResultDescription = $("div#result p#overall-result-description");
+	
 	$("#btnEvaluate").click(function() {
 		// get browser support data
-		var browserSupportData = {};
+		var evaluate = true;
+		var browserData = {};
 		var browserAlert = $("p#browser-alert");
 		var checkedBrowsers = $("#browser-container .ui-block-a input[value=true]").filter(":checked");
 		if(checkedBrowsers.length) {
@@ -106,10 +110,10 @@ $(function() {
 				version = /\d+([.,]\d+)?/.test(version) ? parseFloat(version.replace(",", ".")) : 0.0;
 				if(version < 0) version = 0.0;
 				if(browser === "edge" && version > 0.0 && version < 12.0) version = 12.0;
-				browserSupportData[browser] = version;
+				browserData[browser] = version;
 			});
-			console.dir(browserSupportData);
 		} else {
+			evaluate = false;
 			browserAlert.show();
 			$("h2")[0].scrollIntoView();
 		}
@@ -123,11 +127,51 @@ $(function() {
 			ruleAlert.hide();
 			requiredFeatures = checkedRequired.map(function() { return this.name; }).toArray();
 			niceToHaveFeatures = checkedNiceToHave.map(function() { return this.name; }).toArray();
-			console.dir(requiredFeatures);
-			console.dir(niceToHaveFeatures);
 		} else {
+			evaluate = false;
 			ruleAlert.show();
 			$("h2")[1].scrollIntoView();
 		}
+		
+		if(!evaluate) {
+			return;
+		}
+		
+		// evaluate feature support
+		var requiredSupport = {}, niceToHaveSupport = {};
+		requiredFeatures.forEach(function(featureID) {
+			requiredSupport[featureID] = rules[featureID](browserData);
+		});
+		niceToHaveFeatures.forEach(function(featureID) {
+			niceToHaveSupport[featureID] = rules[featureID](browserData);
+		});
+		console.dir(requiredSupport);
+		console.dir(niceToHaveSupport);
+		
+		// build result page ui
+		var getSupportLevel = function(supportData) {
+			return Object.keys(supportData).reduce(function(result, featureID) {
+				if(result === "false") return result;
+				var featureSupportData = supportData[featureID];
+				var resultForFeature = Object.keys(featureSupportData).reduce(function(res, browser) {
+					if(res === "false") return res; 
+					var supported = featureSupportData[browser];
+					supported = (typeof supported === "boolean") ? "" + supported : (supported.partial ? "partial" : "true");
+					return supported === "true" ? res : supported;
+				}, "true");
+				return resultForFeature === "true" ? result : resultForFeature;
+			}, "true");
+		}
+		var requiredSupportLevel = getSupportLevel(requiredSupport);
+		var niceToHaveSupportLevel = getSupportLevel(niceToHaveSupport);
+		
+		// set overall result text
+		var overallLevel = (requiredSupportLevel === "true" && niceToHaveSupportLevel === "true") ? "true" : (requiredSupportLevel === "false" ? "false" : "partial");
+		overallResultTitle.text(i18n["result." + overallLevel + ".title"]);
+		overallResultTitle.attr("class", overallLevel);
+		overallResultDescription.text(i18n["result." + overallLevel + ".description"]);
+		
+		// show result page
+		$.mobile.navigate("#result");
 	});
 });

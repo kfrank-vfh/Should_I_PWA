@@ -130,8 +130,6 @@ Object.keys(caniuseMapping).map(function(featureID) { return caniuseMapping[feat
 		});
 		// set support data for feature
 		caniuseSupportData[caniuseID] = browserSupportData;
-		console.log(caniuseID);
-		console.dir(browserSupportData);
 	}, "json");
 });
 
@@ -211,13 +209,38 @@ rules["software.speech.recognition"] = caniuseCheck("speech-recognition");
 // CHECK IMPLEMENTATION
 
 function doCheck(browserData, supportData) {
-	// TODO
+	var result = {};
+	Object.keys(browserData).forEach(function(browser) {
+		var entry;
+		var browserSupportData = supportData[browser];
+		if(browserSupportData.length) {
+			var version = browserData[browser];
+			if(version === 0) {
+				entry = browserSupportData[browserSupportData.length-1];
+			} else {
+				for(var i = browserSupportData.length-1; i >= 0; i--) {
+					if(browserSupportData[i].version <= version) {
+						entry = browserSupportData[i];
+						break;
+					}
+				}
+			}
+		}
+		if(!entry || entry.support === "n") {
+			result[browser] = false;
+		} else if(entry.support === "y" && !entry.note) {
+			result[browser] = true;
+		} else {
+			result[browser] = { partial: entry.support === "a"};
+			if(entry.note) result[browser].note = entry.note;
+		}
+	});
+	return result;
 }
 
 function caniuseCheck(caniuseID) {
-	var supportData = caniuseSupportData[caniuseID];
 	return function(browserData) {
-		return doCheck(browserData, supportData);
+		return doCheck(browserData, caniuseSupportData[caniuseID]);
 	}
 }
 

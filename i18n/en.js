@@ -100,3 +100,11 @@ i18n["software.sales.inapp"] = "In-App Purchase";
 i18n["software.speech"] = "Text and speech processing";
 i18n["software.speech.synthesis"] = "Speech synthesis";
 i18n["software.speech.recognition"] = "Speech recognition";
+
+// result
+i18n["result.true.title"] = "A Progressive Web App is suitable.";
+i18n["result.true.description"] = "All required and nice to have features can be used with the specified browsers!";
+i18n["result.partial.title"] = "A Progressive Web App could be an option.";
+i18n["result.partial.description"] = "Some required features are only partially supported or some nice to have features are not supported by the specified browsers. Please check for yourself!";
+i18n["result.false.title"] = "A Progressive Web App is unsuited.";
+i18n["result.false.description"] = "Some required features are not supported by the specified browsers!";
