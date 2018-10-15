@@ -16,9 +16,9 @@ ruleStructure = {
 			video: ["elem", "api"]
 		},
 		output: {
-			image: ["elem", "webgl1", "webgl2"],
+			image: ["elem", "2dcontext", "webgl1", "webgl2"],
 			audio: ["elem", "api"],
-			video: ["elem"],
+			video: ["flash", "elem"],
 			vibration: ["api"]
 		},
 		persistence: {
@@ -45,7 +45,7 @@ ruleStructure = {
 		}
 	},
 	software: {
-		communication: ["emails", "push"],
+		communication: ["emails", "push", "webshare"],
 		install: ["manifest"],
 		offline: ["appcache", "serviceworker"],
 		organization: {
@@ -54,7 +54,7 @@ ruleStructure = {
 			miscellaneous: ["alarm", "notes"]
 		},
 		maps: ["maps"],
-		sales: ["direct", "inapp"],
+		sales: ["checkout", "payreq"],
 		speech: ["synthesis", "recognition"]
 	}
 }
@@ -65,6 +65,7 @@ ruleStructure = {
 caniuseMapping["hardware.recording.image.api"] = "mediacapture-fromelement";
 caniuseMapping["hardware.recording.audio.api"] = "mediacapture-fromelement";
 caniuseMapping["hardware.recording.video.api"] = "mediacapture-fromelement";
+caniuseMapping["hardware.output.image.2dcontext"] = "canvas";
 caniuseMapping["hardware.output.image.webgl1"] = "webgl";
 caniuseMapping["hardware.output.image.webgl2"] = "webgl2";
 caniuseMapping["hardware.output.audio.elem"] = "audio";
@@ -85,7 +86,7 @@ caniuseMapping["hardware.sensors.environment.magnetic.api"] = "magnetometer";
 caniuseMapping["software.install.manifest"] = "web-app-manifest";
 caniuseMapping["software.offline.appcache"] = "offline-apps";
 caniuseMapping["software.offline.serviceworker"] = "serviceworkers";
-caniuseMapping["software.sales.inapp"] = "payment-request";
+caniuseMapping["software.sales.payreq"] = "payment-request";
 caniuseMapping["software.speech.synthesis"] = "speech-synthesis";
 caniuseMapping["software.speech.recognition"] = "speech-recognition";
 
@@ -142,10 +143,14 @@ rules["hardware.recording.audio.api"] = caniuseCheck("mediacapture-fromelement")
 rules["hardware.recording.video.elem"] = resultForAll(true);
 rules["hardware.recording.video.api"] = caniuseCheck("mediacapture-fromelement");
 rules["hardware.output.image.elem"] = resultForAll(true);
+rules["hardware.output.image.2dcontext"] = caniuseCheck("canvas");
 rules["hardware.output.image.webgl1"] = caniuseCheck("webgl");
 rules["hardware.output.image.webgl2"] = caniuseCheck("webgl2");
 rules["hardware.output.audio.elem"] = caniuseCheck("audio");
 rules["hardware.output.audio.api"] = caniuseCheck("audio-api");
+var flashSupport = {version: 0, support: "a", note: "Needs a Plugin to be installed. Won't be supported after 2020."};
+rules["hardware.output.video.flash"] = staticCheck({
+	chrome: [flashSupport], firefox: [flashSupport], safari: [flashSupport], ie: [flashSupport], edge: [flashSupport]});
 rules["hardware.output.video.elem"] = caniuseCheck("video");
 rules["hardware.output.vibration.api"] = caniuseCheck("vibration");
 rules["hardware.persistence.keyvalue.api"] = caniuseCheck("namevalue-storage");
@@ -189,8 +194,10 @@ rules["software.communication.emails"] = resultForAll(true);
 rules["software.communication.push"] = staticCheck({
 	chrome: [{ version: 40, support: "y"}], firefox: [{version: 44, support: "y"}],
 	safari: [{ version: 11.1, support: "a", note: "Safari requires a custom API."}],
-	ie: [], edge: [{ version: 17, support: "y"}]
-});
+	ie: [], edge: [{ version: 17, support: "y"}]});
+rules["software.communication.webshare"] = staticCheck({
+	chrome: [{ version: 61, support: "a", note: "Available only on mobile devices. HTTPS connection is mandatory."}],
+	firefox: [], safari: [], ie: [], edge: []});
 rules["software.install.manifest"] = caniuseCheck("web-app-manifest");
 rules["software.offline.appcache"] = caniuseCheck("offline-apps");
 rules["software.offline.serviceworker"] = caniuseCheck("serviceworkers");
@@ -201,8 +208,8 @@ rules["software.organization.contacts.apple"] = resultForAll(false);
 rules["software.organization.miscellaneous.alarm"] = resultForAll(false);
 rules["software.organization.miscellaneous.notes"] = resultForAll(false);
 rules["software.maps.maps"] = resultForAll(true);
-rules["software.sales.direct"] = resultForAll(false);
-rules["software.sales.inapp"] = caniuseCheck("payment-request");
+rules["software.sales.checkout"] = resultForAll(true);
+rules["software.sales.payreq"] = caniuseCheck("payment-request");
 rules["software.speech.synthesis"] = caniuseCheck("speech-synthesis");
 rules["software.speech.recognition"] = caniuseCheck("speech-recognition");
 
