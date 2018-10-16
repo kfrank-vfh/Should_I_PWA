@@ -1,3 +1,10 @@
+// register service worker
+if("serviceWorker" in navigator) {
+	$(function() {
+		navigator.serviceWorker.register("sw.js");
+	});
+}
+
 // generate UI for rules
 $(document).on("pagebeforecreate", function(event) {
 	

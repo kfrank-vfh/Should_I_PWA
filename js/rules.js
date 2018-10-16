@@ -98,41 +98,49 @@ Object.keys(caniuseMapping).map(function(featureID) { return caniuseMapping[feat
 }).forEach(function(caniuseID) {
 	var url = baseURL + caniuseID + ".json";
 	$.get(url, function(data) {
-		var browserSupportData = {};
-		browsers.forEach(function(browser) {
-			// read support data from caniuse data json
-			var supportData = [];
-			var browserVersions = data.stats[browser];
-			Object.keys(browserVersions).sort(function(a, b) {
-				return parseFloat(a.split("-")[0]) - parseFloat(b.split("-")[0]);
-			}).forEach(function(version) {
-				var support = browserVersions[version];
-				support = support.indexOf("n") === 0 ? "n" : support;
-				support = support.indexOf("p") === 0 ? "n" : support;
-				var lastEntry = supportData.length ? supportData[supportData.length-1] : undefined;
-				if(!lastEntry || lastEntry.support !== support) {
-					supportData.push({version: parseFloat(version.split("-")[0]), support: support});
-				}
-			});
-			// resolve notes
-			supportData = supportData.map(function(entry) {
-				if(entry.support.indexOf("#") > 0) {
-					var num = entry.support.split("#")[1];
-					entry.note = data.notes_by_num[num];
-				}
-				if(entry.support.indexOf("x") > 0) {
-					entry.note = "Supported with prefix: " + (browser === "firefox" ? "moz" : "webkit");
-				}
-				entry.support = entry.support.substring(0, 1);
-				return entry;
-			});
-			// set support data for browser
-			browserSupportData[browser] = supportData;
-		});
+		// check if support data was already converted by service worker
+		if(!browsers.every(function(browser) { return browser in data; })) {
+			data = convertSupportData(data);
+		}
 		// set support data for feature
 		caniuseSupportData[caniuseID] = browserSupportData;
 	}, "json");
 });
+
+function convertSupportData(data) {
+	var browserSupportData = {};
+	browsers.forEach(function(browser) {
+		// read support data from caniuse data json
+		var supportData = [];
+		var browserVersions = data.stats[browser];
+		Object.keys(browserVersions).sort(function(a, b) {
+			return parseFloat(a.split("-")[0]) - parseFloat(b.split("-")[0]);
+		}).forEach(function(version) {
+			var support = browserVersions[version];
+			support = support.indexOf("n") === 0 ? "n" : support;
+			support = support.indexOf("p") === 0 ? "n" : support;
+			var lastEntry = supportData.length ? supportData[supportData.length-1] : undefined;
+			if(!lastEntry || lastEntry.support !== support) {
+				supportData.push({version: parseFloat(version.split("-")[0]), support: support});
+			}
+		});
+		// resolve notes
+		supportData = supportData.map(function(entry) {
+			if(entry.support.indexOf("#") > 0) {
+				var num = entry.support.split("#")[1];
+				entry.note = data.notes_by_num[num];
+			}
+			if(entry.support.indexOf("x") > 0) {
+				entry.note = "Supported with prefix: " + (browser === "firefox" ? "moz" : "webkit");
+			}
+			entry.support = entry.support.substring(0, 1);
+			return entry;
+		});
+		// set support data for browser
+		browserSupportData[browser] = supportData;
+	});
+	return browserSupportData;
+}
 
 // RULE IMPLEMENTATION
 
