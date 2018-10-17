@@ -103,7 +103,7 @@ Object.keys(caniuseMapping).map(function(featureID) { return caniuseMapping[feat
 			data = convertSupportData(data);
 		}
 		// set support data for feature
-		caniuseSupportData[caniuseID] = browserSupportData;
+		caniuseSupportData[caniuseID] = data;
 	}, "json");
 });
 

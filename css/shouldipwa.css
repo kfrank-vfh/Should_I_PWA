@@ -4,7 +4,13 @@ h4 { font-size: 1.6em; }
 h5 { font-size: 1.4em; }
 h6 { font-size: 1.2em; }
 
-p#browser-alert, p#rule-alert {
+div.language-select-container {
+	position: fixed;
+	right: 1em;
+	top: -.3em;
+}
+
+p#guide\.alert\.support, p#guide\.alert\.features {
 	font-weight: bold;
 	background-color: rgba(255, 0, 0, .1);
 	color: red;

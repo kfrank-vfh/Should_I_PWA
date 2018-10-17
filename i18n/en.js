@@ -1,5 +1,31 @@
 i18n = {};
 
+// LOCALE
+i18n["locale"] = "en";
+i18n["locale.en"] = "English";
+
+// INTRO PAGE
+i18n["intro.text"] = "TODO Intro Text";
+i18n["intro.btn"] = "Let's Start!";
+
+// GUIDELINE PAGE
+i18n["guide.btn"] = "Evaluate";
+
+// header and paragraphs
+i18n["guide.head.support"] = "Browser support";
+i18n["guide.para.support"] = "As a first step, please specify, which browsers and which versions should be supported.";
+i18n["guide.alert.support"] = "Please specify at least one supported browser!";
+i18n["guide.head.features"] = "Features";
+i18n["guide.alert.features"] = "Please specify at least one required or nice to have feature!";
+
+// labels to radios
+i18n["guide.label.supported"] = "Supported";
+i18n["guide.label.unsupported"] = "Unsupported";
+i18n["guide.label.fromversion"] = "from version";
+i18n["guide.label.required"] = "Required";
+i18n["guide.label.nicetohave"] = "Nice to have";
+i18n["guide.label.inessential"] = "Inessential";
+
 // browsers
 i18n["browser.chrome"] = "Chrome";
 i18n["browser.firefox"] = "Firefox";
@@ -104,10 +130,21 @@ i18n["software.speech"] = "Text and speech processing";
 i18n["software.speech.synthesis"] = "Speech synthesis";
 i18n["software.speech.recognition"] = "Speech recognition";
 
-// result
+// RESULT PAGE
+//header and paragraphs
+i18n["result.head.overall"] = "Overall result";
+i18n["result.head.perfeature"] = "Result per feature";
+i18n["result.head.required"] = "Required features";
+i18n["result.head.nicetohave"] = "Nice to have features";
 i18n["result.true.title"] = "A Progressive Web App is suitable.";
 i18n["result.true.description"] = "All required and nice to have features can be used with the specified browsers!";
 i18n["result.partial.title"] = "A Progressive Web App could be an option.";
 i18n["result.partial.description"] = "Some required features are only partially supported or some nice to have features are not supported by the specified browsers. Please check for yourself!";
 i18n["result.false.title"] = "A Progressive Web App is unsuited.";
 i18n["result.false.description"] = "Some required features are not supported by the specified browsers!";
+i18n["result.feature.true.prefix"] = "Feature supported by ";
+i18n["result.feature.true.suffix"] = ".";
+i18n["result.feature.partial.prefix"] = "Feature partially supported by ";
+i18n["result.feature.partial.suffix"] = ".";
+i18n["result.feature.false.prefix"] = "Feature unsupported by ";
+i18n["result.feature.false.suffix"] = ".";

@@ -1,11 +1,127 @@
-// register service worker
+// SERVICE WORKER REGISTRATION
 if("serviceWorker" in navigator) {
 	$(function() {
 		navigator.serviceWorker.register("sw.js");
 	});
 }
 
-// generate UI for rules
+// LOCALIZATION
+function localeStorageAvailable() {
+	try {
+		var storage = window["localStorage"];
+		var x = "__storage_test__";
+		storage.setItem(x, x);
+		storage.removeItem(x);
+		return true;
+	} catch (e) {
+		return e instanceof DOMException && (e.code === 22 || e.code === 1014 || e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') && storage.length !== 0;
+	}
+}
+
+$(function() {
+	// check for locale in web storage if available
+	var locale, storageAvailable = localeStorageAvailable();
+	if(storageAvailable) {
+		locale = localStorage["locale"];
+	}
+	// if locale not found, try to get it from the navigator
+	if(!locale) {
+		locale = ("userLanguage" in navigator) ? navigator.userLanguage : navigator.language;
+		locale = locale.split("-")[0];
+	}
+	// check if i18n.js exists for locale, else load en.js and save locale in storage
+	var onSuccess = function(i18nData) {
+		eval(i18nData); // add i18n data to globale context
+		// save locale in storage if available
+		if(storageAvailable) {
+			localStorage["locale"] = i18n["locale"];
+		}
+		// trigger localization of ui
+		window["localizationInitialized"] = true;
+		localizeCompleteUI();
+	};
+	var onError = function() {
+		// load en.js as default language
+		$.get("i18n/en.js", onSuccess, "script");
+	};
+	var settings = {
+		url: "i18n/" + locale + ".js",
+		dataType: "script",
+		success: onSuccess,
+		error: onError
+	};
+	$.ajax(settings);
+});
+
+// GENERATING UI
+var textByID = function() { return i18n[this.id]; };
+var textByClass = function() { return i18n["guide." + this.className.replace("-", ".")]; };
+function localizeCompleteUI() {
+	localizeIntoPage();
+	localizeGuidelinePage();
+	localizeResultPage();
+	window.location.hash = "intro"
+}
+
+function localizeIntoPage() {
+	var page = $("div#intro");
+	// build language select in header
+	var header = page.find("div[data-role=header]");
+	var select = header.find("select#langauge-select");
+	select.empty();
+	Object.keys(i18n).filter(function(key) {
+		return key.indexOf("locale.") === 0;
+	}).map(function(key) {
+		return [key.substring(7), i18n[key]];
+	}).sort(function(a, b) {
+		return a[1].localeCompare(b[1]);
+	}).forEach(function(touple) {
+		var option = $('<option value="' + touple[0] + '"></option>');
+		option.text(touple[1]);
+		option.appendTo(select);
+	});
+	select.val(i18n["locale"]);
+	// localize content
+	var content = page.find("div[role=main]");
+	content.find("p").text(i18n["intro.text"]);
+	content.find("a").text(i18n["intro.btn"]);
+}
+
+function localizeGuidelinePage() {
+	var page = $("div#guideline");
+	var content = page.find("div[role=main]");
+	// adjust general headers and paragraphs
+	content.find("h2").add(content.find("p")).text(textByID);
+	// adjust browser radios and labels
+	var browserContainer = content.find("div#browser-container");
+	browserContainer.find("fieldset").each(function() {
+		$(this).find("legend").text(i18n[this.id]);
+		$(this).find("label").text(textByClass);
+	});
+	browserContainer.find(".ui-block-b label").text(textByClass);
+	// adjust rule header
+	var ruleContainer = content.find("div#rule-container");
+	var headers = $(), i = 3, selection = $("h" + i);
+	for(var selection = ruleContainer.find("h" + i++); selection.length; selection = ruleContainer.find("h" + i++)) {
+		headers = headers.add(selection);
+	}
+	headers.text(textByID);
+	// adjust rule radios
+	ruleContainer.find("fieldset").each(function() {
+		var name = $(this).find("input[name]").first().attr("name");
+		$(this).find("legend").text(i18n[name]);
+		$(this).find("label").text(textByClass);
+	});
+	// adjust evaluate button
+	content.find("button#btnEvaluate").text(i18n["guide.btn"]);
+}
+
+function localizeResultPage() {
+	// adjust header text
+	var content = $("div#result div[role=main]");
+	content.find("h2").add("h3").text(textByID);
+}
+
 $(document).on("pagebeforecreate", function(event) {
 	
 	// check if guideline page should be created
@@ -25,9 +141,9 @@ $(document).on("pagebeforecreate", function(event) {
 		if(browser !== "chrome") {
 			browserContainer.append("<hr>");
 		}
-		var browserElem = browserPrototype.clone();
 		// adjust radio switch
-		browserElem.find(".ui-block-a legend").text(i18n["browser." + browser]);
+		var browserElem = browserPrototype.clone();
+		browserElem.find("fieldset").attr("id", "browser." + browser);
 		browserElem.find(".ui-block-a input").each(function(index, input) {
 			var name = "browser-" + browser + "-supported";
 			input.id = name + index;
@@ -66,7 +182,6 @@ $(document).on("pagebeforecreate", function(event) {
 	
 	function addRadioSwitch(name) {
 		var radioSwitch = rulePrototype.clone();
-		radioSwitch.find("legend").text(i18n[name]);
 		radioSwitch.find("input").each(function(index, input) {
 			input.id = name + index;
 			input.name = name;
@@ -79,7 +194,9 @@ $(document).on("pagebeforecreate", function(event) {
 	
 	function resursiveBuildRuleUI(layer, mapping, name) {
 		if(name.length) {
-			ruleContainer.append("<h" + layer + ">" + i18n[name] + "</h" + layer + ">");
+			var header = $("<h" + layer + "></h" + layer + ">");
+			header.text(i18n[name]);
+			header.appendTo(ruleContainer);
 		}
 		if(Array.isArray(mapping)) {
 			for(var i = 0; i < mapping.length; i++) {
@@ -95,9 +212,14 @@ $(document).on("pagebeforecreate", function(event) {
 		}
 	}
 	resursiveBuildRuleUI(2, ruleStructure, "");
+	
+	// localize ui if already loaded
+	if(window["localizationInitialized"]) {
+		localizeGuidelinePage()
+	}
 });
 
-// click handler for evaluation
+// SUPPORT EVALUATION
 $(function() {
 	var overallResultTitle = $("div#result p#overall-result-title");
 	var overallResultDescription = $("div#result p#overall-result-description");
@@ -110,7 +232,7 @@ $(function() {
 		// get browser support data
 		var evaluate = true;
 		var browserData = {};
-		var browserAlert = $("p#browser-alert");
+		var browserAlert = $("p#guide\.alert\.support");
 		var checkedBrowsers = $("#browser-container .ui-block-a input[value=true]").filter(":checked");
 		if(checkedBrowsers.length) {
 			browserAlert.hide();
@@ -131,7 +253,7 @@ $(function() {
 		
 		// get required and nice to have rule data
 		var requiredFeatures, niceToHaveFeatures;
-		var ruleAlert = $("p#rule-alert");
+		var ruleAlert = $("p#guide\.alert\.features");
 		var checkedRequired = $("#rule-container input[value=required]").filter(":checked");
 		var checkedNiceToHave = $("#rule-container input[value=nicetohave]").filter(":checked");
 		if(checkedRequired.length + checkedNiceToHave.length) {
@@ -188,7 +310,9 @@ $(function() {
 			Object.keys(supportData).forEach(function(featureID) {
 				// create headline
 				var parentFeatureID = featureID.substring(0, featureID.lastIndexOf("."));
-				container.append("<h4>" + i18n[parentFeatureID] + " - " + i18n[featureID] + "</h4>");
+				var header = $("<h4></h4>");
+				header.text(i18n[parentFeatureID] + " - " + i18n[featureID]);
+				header.appendTo(container);
 				// function for creating paragraph text
 				var notes = [];
 				var supportToBrowser = supportData[featureID];
@@ -209,7 +333,9 @@ $(function() {
 					return support === true || support.partial === false;
 				});
 				if(paraText.length) {
-					container.append("<p>Feature supported by " + paraText + "</p>");
+					var para = $("<p></p>");
+					para.text(i18n["result.feature.true.prefix"] + paraText + i18n["result.feature.true.suffix"]);
+					para.appendTo(container);
 				}
 				// create paragraph for partially supported browsers
 				paraText = createParaText(function(browser) {
@@ -217,14 +343,18 @@ $(function() {
 					return typeof support === "object" && support.partial;
 				});
 				if(paraText.length) {
-					container.append("<p>Feature partially supported by " + paraText + ".</p>");
+					var para = $("<p></p>");
+					para.text(i18n["result.feature.partial.prefix"] + paraText + i18n["result.feature.partial.suffix"]);
+					para.appendTo(container);
 				}
 				// create paragraph for unsupported browsers
 				paraText = createParaText(function(browser) {
 					return supportToBrowser[browser] === false;
 				});
 				if(paraText.length) {
-					container.append("<p>Feature unsupported by " + paraText + "</p>");
+					var para = $("<p></p>");
+					para.text(i18n["result.feature.false.prefix"] + paraText + i18n["result.feature.false.suffix"]);
+					para.appendTo(container);
 				}
 				// create notes, when some were specified
 				if(notes.length) {

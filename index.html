@@ -24,20 +24,26 @@
 	<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 </head>
 <body>
-
+	<!-- INTRO PAGE -->
 	<div data-role="page" id="intro">
 	
 		<div data-role="header">
 			<h1>Should I PWA?</h1>
+			<div class="language-select-container">
+				<select id="langauge-select">
+					<option value="en">English</option>
+				</select>
+			</div>
 		</div>
 	
 		<div class="ui-content" role="main">
-			<p>Intro Text</p>
-			<a class="ui-btn ui-corner-all" href="#guideline">Let's Start!</a>
+			<p></p>
+			<a class="ui-btn ui-corner-all" href="#guideline"></a>
 		</div>
 	
 	</div>
 
+	<!-- GUIDELINE PAGE -->
 	<div data-role="page" id="guideline">
 	
 		<div data-role="header">
@@ -46,10 +52,10 @@
 		
 		<div class="ui-content" role="main">
 			<form>
-				<h2>Browser support</h2>
-				<p>As a first step, please specify, which browsers and which versions should be supported.</p>
+				<h2 id="guide.head.support"></h2>
+				<p id="guide.para.support"></p>
 				
-				<p id="browser-alert"  hidden="hidden">Please specify at least one supported browser!</p>
+				<p id="guide.alert.support" hidden="hidden"></p>
 				
 				<div id="browser-container">
 					<div class="prototype" hidden="hidden">
@@ -58,38 +64,38 @@
 								<fieldset data-role="controlgroup" data-type="horizontal" class="ui-field-contain">
 							        <legend></legend>
 							        <input type="radio" value="true">
-							        <label>Supported</label>
+							        <label class="label-supported"></label>
 							        <input type="radio" value="false" checked="checked">
-							        <label>Unsupported</label>
+							        <label class="label-unsupported"></label>
 						    	</fieldset>
 							</div>
 							<div class="ui-block-b">
-								<label>from version</label>
+								<label class="label-fromversion"></label>
 								<input type="number" data-clear-btn="false">
 							</div>
 						</div>
 					</div>
 				</div>
 				
-				<h2>Features</h2>
+				<h2 id="guide.head.features"></h2>
 				
-				<p id="rule-alert" hidden="hidden">Please specify at least one required or nice to have feature!</p>
+				<p id="guide.alert.features" hidden="hidden"></p>
 				
 				<div id="rule-container">
 					<div class="prototype" hidden="hidden">
 						<fieldset data-role="controlgroup" data-type="horizontal" class="ui-field-contain">
 					        <legend></legend>
 					        <input type="radio" value="required">
-					        <label>Required</label>
+					        <label class="label-required"></label>
 					        <input type="radio" value="nicetohave">
-					        <label>Nice to have</label>
+					        <label class="label-nicetohave"></label>
 					        <input type="radio" value="inessential" checked="checked">
-					        <label>Inessential</label>
+					        <label class="label-inessential"></label>
 					    </fieldset>
 					</div>
 				</div>
 				
-				<button id="btnEvaluate" type="button" class="ui-btn ui-corner-all">Evaluate</button>
+				<button id="btnEvaluate" type="button" class="ui-btn ui-corner-all"></button>
 			</form>
 		</div>
 		
@@ -98,6 +104,7 @@
 		</div> -->
 	</div>
 	
+	<!-- RESULT PAGE -->
 	<div data-role="page" id="result">
 	
 		<div data-role="header">
@@ -105,19 +112,19 @@
 		</div>
 	
 		<div class="ui-content" role="main">
-			<h2>Overall result</h2>
+			<h2 id="result.head.overall"></h2>
 			<p id="overall-result-title"></p>
 			<p id="overall-result-description"></p>
 			
-			<h2>Result per feature</h2>
+			<h2 id="result.head.perfeature"></h2>
 			
 			<div id="required-feature-block">
-				<h3>Required features</h3>
+				<h3 id="result.head.required"></h3>
 				<div id="required-feature-container"></div>
 			</div>
 			
 			<div id="nicetohave-feature-block">
-				<h3>Nice to have features</h3>
+				<h3 id="result.head.nicetohave"></h3>
 				<div id="nicetohave-feature-container"></div>
 			</div>
 			
