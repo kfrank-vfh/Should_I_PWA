@@ -83,7 +83,7 @@ function localizeIntoPage() {
 	select.val(i18n["locale"]);
 	// localize content
 	var content = page.find("div[role=main]");
-	content.find("p").text(i18n["intro.text"]);
+	content.find("p").html(i18n["intro.text"]);
 	content.find("a").text(i18n["intro.btn"]);
 }
 

@@ -5,7 +5,7 @@ i18n["locale"] = "en";
 i18n["locale.en"] = "English";
 
 // INTRO PAGE
-i18n["intro.text"] = "TODO Intro Text";
+i18n["intro.text"] = "<b>What are PWAs?</b><br><br>PWA is the abbreviation for progressive web app.<br><br>Progressive web apps are responsive and securely transmitted web apps using a HTTPS encryption. PWAs are developed according to the progressive enhancement principle. They provide offline functionality, installation and a reliable and engaging user experience via service worker, push notifications and web app manifest.<br><br><b>What is this app?</b><br><br><i>Should I PWA?</i> checks technical requirements against browser support data and provides a statement, wether you can use a progressive web app for your requirements or not.<br><br><b>How do i use it?</b><br><br>Just proceed to the next page and enter the browsers and versions you want to support in a first step. After that, specify the technical functions that are required, nice to have and inessential. Finally let the app to the work for you!";
 i18n["intro.btn"] = "Let's Start!";
 
 // GUIDELINE PAGE
@@ -13,9 +13,10 @@ i18n["guide.btn"] = "Evaluate";
 
 // header and paragraphs
 i18n["guide.head.support"] = "Browser support";
-i18n["guide.para.support"] = "As a first step, please specify, which browsers and which versions should be supported.";
+i18n["guide.para.support"] = "As a first step, please specify, which browsers and which versions should be supported. (Specifying no version checks against the most current one)";
 i18n["guide.alert.support"] = "Please specify at least one supported browser!";
 i18n["guide.head.features"] = "Features";
+i18n["guide.para.features"] = "As a second step, please specify, which technical functions are required, nice to have and inessential.";
 i18n["guide.alert.features"] = "Please specify at least one required or nice to have feature!";
 
 // labels to radios
