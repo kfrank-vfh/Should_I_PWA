@@ -137,6 +137,7 @@ function convertFeatureResponse(response) {
 	// get response body as json, convert and return it
 	return response.json().then(function(data) {
 		var body = convertSupportData(data);
+		body = JSON.stringify(body);
 		return new Response(body, init);
 	});
 }

@@ -334,7 +334,7 @@ $(function() {
 				});
 				if(paraText.length) {
 					var para = $("<p></p>");
-					para.text(i18n["result.feature.true.prefix"] + paraText + i18n["result.feature.true.suffix"]);
+					para.html(i18n["result.feature.true.prefix"] + paraText + i18n["result.feature.true.suffix"]);
 					para.appendTo(container);
 				}
 				// create paragraph for partially supported browsers
@@ -344,7 +344,7 @@ $(function() {
 				});
 				if(paraText.length) {
 					var para = $("<p></p>");
-					para.text(i18n["result.feature.partial.prefix"] + paraText + i18n["result.feature.partial.suffix"]);
+					para.html(i18n["result.feature.partial.prefix"] + paraText + i18n["result.feature.partial.suffix"]);
 					para.appendTo(container);
 				}
 				// create paragraph for unsupported browsers
@@ -353,18 +353,21 @@ $(function() {
 				});
 				if(paraText.length) {
 					var para = $("<p></p>");
-					para.text(i18n["result.feature.false.prefix"] + paraText + i18n["result.feature.false.suffix"]);
+					para.html(i18n["result.feature.false.prefix"] + paraText + i18n["result.feature.false.suffix"]);
 					para.appendTo(container);
 				}
 				// create notes, when some were specified
 				if(notes.length) {
-					var listItems = notes.reduce(function(prev, note) {
-						return prev + "<li>" + note + "</li>";
-					}, "");
-					container.append("<p>Notes:</p><ol>" + listItems + "</ol>");
+					var listItems = notes.reduce(function(list, note) {
+						var item = $("<li></li>");
+						item.text(note);
+						return list.add(item);
+					}, $());
+					container.append("<p>Notes:</p>");
+					var orderedList = $("<ol></ol>");
+					orderedList.append(listItems);
+					container.append(orderedList);
 				}
-				// create useful web links
-				// TODO
 			});
 		}
 		requiredFeatureBlock.toggle(Object.keys(requiredSupport).length > 0);
