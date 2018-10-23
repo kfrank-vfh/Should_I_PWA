@@ -8,6 +8,8 @@ i18n["locale.de"] = "Deutsch";
 // INTRO PAGE
 i18n["intro.text"] = "<b>Was sind PWAs?</b><br><br>PWA ist eine Abkürzung für Progressive Web App.<br><br>Progressive Web Apps sind responsive und per HTTPS übertragene Webanwendungen, die nach dem Grundsatz des Progressive Enhancement die Fähigkeiten der Browser für eine fortschreitende Verbesserung nutzen, wodurch mittels Offlinefunktionalität über Service Worker, eine Installation anhand eines Web App Manifests und Push Notifications eine zuverlässige, motivierende und native Nutzererfahrung gewährleistet wird.<br><br><b>Was macht diese App?</b><br><br><i>Should I PWA?</i> prüft technische Anforderungen gegen Browser und ihre Versionen und liefert eine Aussage darüber, ob zu den gegebenen Anforderungen eine Progressive Web App erstellt werden kann oder nicht.<br><br><b>Wie benutze ich die App?</b><br><br>Gehe einfach zur nächsten Seite und trage oben als erstes die Browser und Versionen ein, die du unterstützen willst. Anschließend gibt du an, welche der technischen Funktionen Pflicht, nur ganz nett oder unwichtig sind. Lasse zuletzt die App die ganze Arbeit für dich machen!";
 i18n["intro.btn"] = "Los geht's!";
+i18n["intro.footer.createdby"] = "Erstellt von";
+i18n["intro.footer.guidelines"] = "Regelwerk";
 
 // GUIDELINE PAGE
 i18n["guide.btn"] = "Auswerten";

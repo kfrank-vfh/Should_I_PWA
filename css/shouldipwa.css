@@ -44,6 +44,17 @@ p#overall-result-title.false {
 	border-color: red;
 }
 
+div#intro div[role=main] {
+	margin-bottom: 3em;
+}
+
+div#intro div[data-role=footer] {
+	position: absolute;
+	bottom: 0;
+	top: auto;
+	width: 100%;
+}
+
 @media all and (min-width: 50em) {
 	div[data-role=page] div.ui-content {
 		width: 50em;

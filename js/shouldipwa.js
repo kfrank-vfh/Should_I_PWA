@@ -68,13 +68,13 @@ function establishNewLocale(i18nData) {
 var textByID = function() { return i18n[this.id]; };
 var textByClass = function() { return i18n["guide." + this.className.replace("-", ".")]; };
 function localizeCompleteUI() {
-	localizeIntoPage();
+	localizeIntroPage();
 	localizeGuidelinePage();
 	localizeResultPage();
 	window.location.hash = "intro"
 }
 
-function localizeIntoPage() {
+function localizeIntroPage() {
 	var page = $("div#intro");
 	// build language select in header
 	var header = page.find("div[data-role=header]");
@@ -91,11 +91,19 @@ function localizeIntoPage() {
 		option.text(touple[1]);
 		option.appendTo(select);
 	});
-	select.val(i18n["locale"]);
+	// set value in language select
+	var value = i18n["locale"];
+	select.val(value);
+	var uiValue = select.find("option[value=" + value + "]").text();
+	select.parent().find("span").text(uiValue);
 	// localize content
 	var content = page.find("div[role=main]");
 	content.find("p").html(i18n["intro.text"]);
 	content.find("a").text(i18n["intro.btn"]);
+	// localize footer
+	var footer = page.find("div[data-role=footer]");
+	footer.find("span#createdby").text(i18n["intro.footer.createdby"] + " Kevin Frank");
+	footer.find("a#guidepdf").text(i18n["intro.footer.guidelines"] + ".pdf");
 }
 
 function localizeGuidelinePage() {
