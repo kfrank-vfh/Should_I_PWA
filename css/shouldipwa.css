@@ -5,7 +5,7 @@ h5 { font-size: 1.4em; }
 h6 { font-size: 1.2em; }
 
 div.language-select-container {
-	position: fixed;
+	position: absolute;
 	right: 1em;
 	top: -.3em;
 }
