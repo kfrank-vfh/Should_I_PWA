@@ -20,8 +20,8 @@ function localeStorageAvailable() {
 
 $(function() {
 	// check for locale in web storage if available
-	var locale, storageAvailable = localeStorageAvailable();
-	if(storageAvailable) {
+	var locale;
+	if(localeStorageAvailable()) {
 		locale = localStorage["locale"];
 	}
 	// if locale not found, try to get it from the navigator
@@ -30,16 +30,7 @@ $(function() {
 		locale = locale.split("-")[0];
 	}
 	// check if i18n.js exists for locale, else load en.js and save locale in storage
-	var onSuccess = function(i18nData) {
-		eval(i18nData); // add i18n data to globale context
-		// save locale in storage if available
-		if(storageAvailable) {
-			localStorage["locale"] = i18n["locale"];
-		}
-		// trigger localization of ui
-		window["localizationInitialized"] = true;
-		localizeCompleteUI();
-	};
+	var onSuccess = establishNewLocale;
 	var onError = function() {
 		// load en.js as default language
 		$.get("i18n/en.js", onSuccess, "script");
@@ -51,7 +42,27 @@ $(function() {
 		error: onError
 	};
 	$.ajax(settings);
+	// find language select and add change handler
+	$("select#langauge-select").change(function() {
+		var locale = $(this).val();
+		var url = "i18n/" + locale + ".js";
+		$.get(url, establishNewLocale, "script");
+	});
 });
+
+function establishNewLocale(i18nData) {
+	// clear current i18n data, if exists
+	if(i18n) delete i18n;
+	// add i18n data to globale context
+	eval(i18nData); 
+	// save locale in storage if available
+	if(localeStorageAvailable()) {
+		localStorage["locale"] = i18n["locale"];
+	}
+	// trigger localization of ui
+	window["localizationInitialized"] = true;
+	localizeCompleteUI();
+}
 
 // GENERATING UI
 var textByID = function() { return i18n[this.id]; };
@@ -363,7 +374,7 @@ $(function() {
 						item.text(note);
 						return list.add(item);
 					}, $());
-					container.append("<p>Notes:</p>");
+					container.append("<p>" + i18n["result.feature.note"] + ":</p>");
 					var orderedList = $("<ol></ol>");
 					orderedList.append(listItems);
 					container.append(orderedList);

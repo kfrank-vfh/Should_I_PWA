@@ -10,7 +10,8 @@ const resources = [
 	"/css/shouldipwa.css",
 	"/js/rules.js",
 	"/js/shouldipwa.js",
-	"/i18n/en.js"
+	"/i18n/en.js",
+	"/i18n/de.js"
 ]
 const features = [
 	"mediacapture-fromelement",

@@ -53,7 +53,7 @@ ruleStructure = {
 			contacts: ["google", "apple"],
 			miscellaneous: ["alarm", "notes"]
 		},
-		maps: ["maps"],
+		maps: ["google", "apple", "open"],
 		sales: ["checkout", "payreq"],
 		speech: ["synthesis", "recognition"]
 	}
@@ -62,9 +62,9 @@ ruleStructure = {
 // CAN I USE DATA
 
 // create mapping of caniuse id to feature
-caniuseMapping["hardware.recording.image.api"] = "mediacapture-fromelement";
-caniuseMapping["hardware.recording.audio.api"] = "mediacapture-fromelement";
-caniuseMapping["hardware.recording.video.api"] = "mediacapture-fromelement";
+caniuseMapping["hardware.recording.image.api"] = "stream";
+caniuseMapping["hardware.recording.audio.api"] = "stream";
+caniuseMapping["hardware.recording.video.api"] = "stream";
 caniuseMapping["hardware.output.image.2dcontext"] = "canvas";
 caniuseMapping["hardware.output.image.webgl1"] = "webgl";
 caniuseMapping["hardware.output.image.webgl2"] = "webgl2";
@@ -145,11 +145,11 @@ function convertSupportData(data) {
 // RULE IMPLEMENTATION
 
 rules["hardware.recording.image.elem"] = resultForAll(true);
-rules["hardware.recording.image.api"] = caniuseCheck("mediacapture-fromelement");
+rules["hardware.recording.image.api"] = caniuseCheck("stream");
 rules["hardware.recording.audio.elem"] = resultForAll(true);
-rules["hardware.recording.audio.api"] = caniuseCheck("mediacapture-fromelement");
+rules["hardware.recording.audio.api"] = caniuseCheck("stream");
 rules["hardware.recording.video.elem"] = resultForAll(true);
-rules["hardware.recording.video.api"] = caniuseCheck("mediacapture-fromelement");
+rules["hardware.recording.video.api"] = caniuseCheck("stream");
 rules["hardware.output.image.elem"] = resultForAll(true);
 rules["hardware.output.image.2dcontext"] = caniuseCheck("canvas");
 rules["hardware.output.image.webgl1"] = caniuseCheck("webgl");
@@ -215,7 +215,9 @@ rules["software.organization.contacts.google"] = resultForAll(true);
 rules["software.organization.contacts.apple"] = resultForAll(false);
 rules["software.organization.miscellaneous.alarm"] = resultForAll(false);
 rules["software.organization.miscellaneous.notes"] = resultForAll(false);
-rules["software.maps.maps"] = resultForAll(true);
+rules["software.maps.google"] = resultForAll(true);
+rules["software.maps.apple"] = resultForAll(true);
+rules["software.maps.open"] = resultForAll(true);
 rules["software.sales.checkout"] = resultForAll(true);
 rules["software.sales.payreq"] = caniuseCheck("payment-request");
 rules["software.speech.synthesis"] = caniuseCheck("speech-synthesis");

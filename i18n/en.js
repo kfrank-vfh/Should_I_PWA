@@ -3,6 +3,7 @@ i18n = {};
 // LOCALE
 i18n["locale"] = "en";
 i18n["locale.en"] = "English";
+i18n["locale.de"] = "German";
 
 // INTRO PAGE
 i18n["intro.text"] = "<b>What are PWAs?</b><br><br>PWA is the abbreviation for progressive web app.<br><br>Progressive web apps are responsive and securely transmitted web apps using a HTTPS encryption. PWAs are developed according to the progressive enhancement principle. They provide offline functionality, installation and a reliable and engaging user experience via service worker, push notifications and web app manifest.<br><br><b>What is this app?</b><br><br><i>Should I PWA?</i> checks technical requirements against browser support data and provides a statement, wether you can use a progressive web app for your requirements or not.<br><br><b>How do i use it?</b><br><br>Just proceed to the next page and enter the browsers and versions you want to support in a first step. After that, specify the technical functions that are required, nice to have and inessential. Finally let the app to the work for you!";
@@ -91,7 +92,7 @@ i18n["hardware.sensors.motion.rotation.event"] = "deviceorientation event";
 i18n["hardware.sensors.motion.rotation.api"] = "Gyroscope API";
 i18n["hardware.sensors.environment"] = "Environment sensors";
 i18n["hardware.sensors.environment.light"] = "Ambient light sensor";
-i18n["hardware.sensors.environment.light.event"] = "ondevicelight event";
+i18n["hardware.sensors.environment.light.event"] = "devicelight event";
 i18n["hardware.sensors.environment.light.api"] = "Ambient Light Sensor API";
 i18n["hardware.sensors.environment.magnetic"] = "Magnetic field sensor";
 i18n["hardware.sensors.environment.magnetic.api"] = "Magnetometer API";
@@ -123,9 +124,11 @@ i18n["software.organization.miscellaneous"] = "Other Apps";
 i18n["software.organization.miscellaneous.alarm"] = "Alarm clock";
 i18n["software.organization.miscellaneous.notes"] = "Taking notes";
 i18n["software.maps"] = "Maps";
-i18n["software.maps.maps"] = "Using Maps";
+i18n["software.maps.google"] = "Google Maps";
+i18n["software.maps.apple"] = "Apple Maps";
+i18n["software.maps.open"] = "OpenStreetMap";
 i18n["software.sales"] = "Sales";
-i18n["software.sales.checkout"] = "Online checkou";
+i18n["software.sales.checkout"] = "Online checkout";
 i18n["software.sales.payreq"] = "Payment Request API";
 i18n["software.speech"] = "Text and speech processing";
 i18n["software.speech.synthesis"] = "Speech synthesis";
@@ -149,3 +152,4 @@ i18n["result.feature.partial.prefix"] = "Feature partially supported by ";
 i18n["result.feature.partial.suffix"] = ".";
 i18n["result.feature.false.prefix"] = "Feature unsupported by ";
 i18n["result.feature.false.suffix"] = ".";
+i18n["result.feature.note"] = "Notes";
