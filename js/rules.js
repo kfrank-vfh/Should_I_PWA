@@ -1,5 +1,3 @@
-// TODO mention, that data is taken partially from caniuse.com
-
 // GLOBAL VARIABLES
 var browsers = ["chrome", "firefox", "safari", "ie", "edge"];
 var rules = {};
