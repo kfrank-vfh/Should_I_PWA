@@ -139,6 +139,7 @@ function localizeResultPage() {
 	// adjust header text
 	var content = $("div#result div[role=main]");
 	content.find("h2").add("h3").text(textByID);
+	content.find("a#resultBackBtn").text(i18n["result.btn"]);
 }
 
 $(document).on("pagebeforecreate", function(event) {

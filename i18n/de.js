@@ -155,3 +155,4 @@ i18n["result.feature.partial.suffix"] = " unterstützt.";
 i18n["result.feature.false.prefix"] = "Die Funktion wird nicht durch ";
 i18n["result.feature.false.suffix"] = " unterstützt.";
 i18n["result.feature.note"] = "Anmerkungen";
+i18n["result.btn"] = "Anforderungen anpassen";

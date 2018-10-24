@@ -155,3 +155,4 @@ i18n["result.feature.partial.suffix"] = ".";
 i18n["result.feature.false.prefix"] = "Feature unsupported by ";
 i18n["result.feature.false.suffix"] = ".";
 i18n["result.feature.note"] = "Notes";
+i18n["result.btn"] = "Adjust requirements";
