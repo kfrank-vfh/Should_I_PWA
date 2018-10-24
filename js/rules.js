@@ -175,7 +175,9 @@ rules["hardware.communication.internet.requesting"] = staticCheck({
 	safari: [{version: 1.2, support: "y"}], ie: [{version: 7, support: "y"}],
 	edge: [{version: 0, support: "y"}]});
 rules["hardware.communication.miscellaneous.gps"] = caniuseCheck("geolocation");
-rules["hardware.communication.miscellaneous.bluetooth"] = caniuseCheck("web-bluetooth");
+rules["hardware.communication.miscellaneous.bluetooth"] = staticCheck({
+	chrome: [{version: 53, support: "a", note: "Currently support varies by OS (https://github.com/WebBluetoothCG/web-bluetooth/blob/gh-pages/implementation-status.md)" }],
+	firefox: [], safari: [], ie: [], edge: []});
 rules["hardware.communication.miscellaneous.nfc"] = resultForAll(false);
 rules["hardware.communication.miscellaneous.usb"] = caniuseCheck("webusb");
 rules["hardware.sensors.motion.acceleration.event"] = caniuseCheck("deviceorientation");
